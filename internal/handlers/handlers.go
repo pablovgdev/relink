@@ -19,6 +19,16 @@ func Redirect(c echo.Context) error {
 	return c.Redirect(http.StatusSeeOther, url)
 }
 
+func GetRedirects(c echo.Context) error {
+	redirects, err := redirect.GetRedirects()
+	if err != nil {
+		c.Logger().Error(err)
+		return c.String(http.StatusInternalServerError, "Internal server error")
+	}
+
+	return c.JSON(http.StatusOK, redirects)
+}
+
 type RedirectBody struct {
 	Path string `json:"path"`
 	URL  string `json:"url"`
